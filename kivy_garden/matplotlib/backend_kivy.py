@@ -12,20 +12,6 @@ instead of rendering a static image, uses the kivy graphics instructions
 :class:`kivy.graphics.Line` and :class:`kivy.graphics.Mesh` to render on the
 canvas.
 
-Installation
-------------
-
-The matplotlib backend for kivy can be used by using the garden extension in
-kivy following this .. _link: http://kivy.org/docs/api-kivy.garden.html ::
-
-    garden install matplotlib
-
-Or if you want to include it directly on your application ::
-
-    cd myapp
-    garden install --app matplotlib
-
-
 Initialization
 --------------
 
@@ -34,7 +20,7 @@ as explained
 .. _here: http://matplotlib.org/faq/usage_faq.html#what-is-a-backend::
 
     import matplotlib
-    matplotlib.use('module://kivy.garden.matplotlib.backend_kivy')
+    matplotlib.use('module://kivy_garden.matplotlib.backend_kivy')
 
 Once this is done, any figure instantiated after will be wrapped by a
 :class:`FigureCanvasKivy` ready to use. From here there are two options to
@@ -48,9 +34,9 @@ the first example in the following section.
 
     One can create a matplotlib widget by importing FigureCanvas::
 
-        from kivy.garden.matplotlib.backend_kivyagg import FigureCanvas
+        from kivy_garden.matplotlib.backend_kivyagg import FigureCanvas
         or
-        from kivy.garden.matplotlib.backend_kivy import FigureCanvas
+        from kivy_garden.matplotlib.backend_kivy import FigureCanvas
 
     and then instantiate an object::
 
@@ -352,6 +338,8 @@ class Show(ShowBase):
     '''mainloop needs to be overwritten to define the show() behavior for kivy
        framework.
     '''
+
+    @classmethod
     def mainloop(self):
         app = App.get_running_app()
         if app is None:
@@ -401,7 +389,7 @@ class RendererKivy(RendererBase):
         self.dpi = widget.figure.dpi
         self._markers = {}
         #  Can be enhanced by using TextToPath matplotlib, textpath.py
-        self.mathtext_parser = MathTextParser("Bitmap")
+        self.mathtext_parser = MathTextParser("agg")
         self.list_goraud_triangles = []
         self.clip_rectangles = []
         self.labels_inside_plot = []

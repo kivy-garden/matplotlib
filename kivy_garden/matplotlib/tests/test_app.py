@@ -5,7 +5,7 @@ from matplotlib.figure import Figure
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 
-class TestApp(App):
+class AppTest(App):
     def build(self):
         fig = Figure()
         ax = fig.add_subplot(111)

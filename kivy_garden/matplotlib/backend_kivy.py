@@ -244,7 +244,7 @@ from matplotlib.backend_bases import (
 )
 from matplotlib.figure import Figure
 from matplotlib.transforms import Bbox, Affine2D
-from matplotlib.backend_bases import ShowBase, Event
+from matplotlib.backend_bases import ShowBase, Event, ResizeEvent
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.mathtext import MathTextParser
 from matplotlib import rcParams
@@ -1341,16 +1341,19 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         self.draw()
 
     def _on_size_changed(self, *args):
-        """Changes the size of the matplotlib figure based on the size of the
-        widget. The widget will change size according to the parent Layout
-        size.
-        """
+        '''Changes the size of the matplotlib figure based on the size of the
+           widget. The widget will change size according to the parent Layout
+           size.
+        '''
         w, h = self.size
+        if w <= 0 or h <= 0:
+            return
         dpival = self.figure.dpi
         winch = float(w) / dpival
         hinch = float(h) / dpival
         self.figure.set_size_inches(winch, hinch, forward=False)
-        self.resize_event()
+        event = ResizeEvent('resize_event', self)
+        self.callbacks.process('resize_event', event)
         self.draw()
 
     def callback(self, *largs):

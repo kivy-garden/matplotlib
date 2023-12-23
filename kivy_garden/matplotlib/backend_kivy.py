@@ -989,7 +989,8 @@ class NavigationToolbar2Kivy(NavigationToolbar2):
         """
         basedir = os.path.join(rcParams["datapath"], "images")
         actionview = ActionView()
-        actionprevious = ActionPrevious(title="Navigation", with_previous=False)
+        actionprevious = ActionPrevious(title="Navigation",
+                                        with_previous=False)
         actionoverflow = ActionOverflow()
         actionview.add_widget(actionprevious)
         actionview.add_widget(actionoverflow)
@@ -1214,36 +1215,15 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         if super(FigureCanvasKivy, self).on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos):
-            event = MouseEvent(
-                'motion_notify_event',
-                canvas=self,
-                x=x,
-                y=y,
-                guiEvent=None)
-            self.callbacks.process('motion_notify_event', event)
+            self.motion_notify_event(x, y)
             touch.grab(self)
             if 'button' in touch.profile and touch.button in ("scrollup",
                                                               "scrolldown"):
-                event = MouseEvent(
-                    'scroll_event',
-                    canvas=self,
-                    x=x,
-                    y=y,
-                    step=5,
-                    guiEvent=None)
-                self.callbacks.process('scroll_event', event)
+                self.scroll_event(x, y, 5)
             else:
-                event = MouseEvent(
-                    'button_press_event',
-                    canvas=self,
-                    x=x,
-                    y=y,
-                    button=self.get_mouse_button(touch),
-                    dblclick=False,
-                    guiEvent=None)
-                self.callbacks.process('button_press_event', event)
+                self.button_press_event(x, y, self.get_mouse_button(touch))
             if self.entered_figure:
-                self.enter_notify_event(guiEvent=None, xy=None)
+                self.enter_notify_event()
         else:
             if not self.entered_figure:
                 self.leave_notify_event(guiEvent=None)
@@ -1258,18 +1238,12 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         y = newcoord[1]
         inside = self.collide_point(touch.x, touch.y)
         if inside:
-            event = MouseEvent(
-                'motion_notify_event',
-                canvas=self,
-                x=x,
-                y=y,
-                guiEvent=None)
-            self.callbacks.process('motion_notify_event', event)
+            self.motion_notify_event(x, y)
         if not inside and not self.entered_figure:
             self.leave_notify_event(guiEvent=None)
             self.entered_figure = True
         elif inside and self.entered_figure:
-            self.enter_notify_event(guiEvent=None, xy=(x, y))
+            self.enter_notify_event()
             self.entered_figure = False
         return False
 
@@ -1297,23 +1271,9 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         if touch.grab_current is self:
             if 'button' in touch.profile and touch.button in ("scrollup",
                                                               "scrolldown"):
-                event = MouseEvent(
-                    'scroll_event',
-                    canvas=self,
-                    x=x,
-                    y=y,
-                    step=5,
-                    guiEvent=None)
-                self.callbacks.process('scroll_event', event)
+                self.scroll_event(x, y, 5)
             else:
-                event = MouseEvent(
-                    'button_release_event',
-                    canvas=self,
-                    x=x,
-                    y=y,
-                    button=self.get_mouse_button(touch),
-                    dblclick=False, guiEvent=None)
-                self.callbacks.process('button_release_event', event)
+                self.button_release_event(x, y, self.get_mouse_button(touch))
             touch.ungrab(self)
         else:
             return super(FigureCanvasKivy, self).on_touch_up(touch)
@@ -1321,23 +1281,13 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         """Kivy event to trigger matplotlib `key_press_event`."""
-        event = KeyEvent(
-            'key_press_event',
-            canvas=self,
-            key=keycode[1],
-            guiEvent=None)
-        self.callbacks.process('key_press_event', event)
+        self.key_press_event(key=keycode[1])
         return super(FigureCanvasKivy, self).keyboard_on_key_down(
             window, keycode, text, modifiers)
 
     def keyboard_on_key_up(self, window, keycode):
         """Kivy event to trigger matplotlib `key_release_event`."""
-        event = KeyEvent(
-            'key_release_event',
-            canvas=self,
-            key=keycode[1],
-            guiEvent=None)
-        self.callbacks.process('key_release_event', event)
+        self.key_release_event(key=keycode[1])
         return super(FigureCanvasKivy, self).keyboard_on_key_up(
             window, keycode)
 
@@ -1352,27 +1302,84 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         y = newcoord[1]
         inside = self.collide_point(*pos)
         if inside:
-            event = MouseEvent(
-                'motion_notify_event',
-                canvas=self,
-                x=x,
-                y=y,
-                guiEvent=None)
-            self.callbacks.process('motion_notify_event', event)
+            self.motion_notify_event(x, y)
         if not inside and not self.entered_figure:
             self.leave_notify_event(guiEvent=None)
             self.entered_figure = True
         elif inside and self.entered_figure:
-            self.enter_notify_event(guiEvent=None, xy=(pos[0], pos[1]))
+            self.enter_notify_event()
             self.entered_figure = False
 
-    def enter_notify_event(self, guiEvent=None, xy=None):
-        event = Event("figure_enter_event", self, guiEvent)
+    def enter_notify_event(self, gui_event=None):
+        event = Event("figure_enter_event", self, gui_event)
         self.callbacks.process("figure_enter_event", event)
 
-    def leave_notify_event(self, guiEvent=None):
-        event = Event("figure_leave_event", self, guiEvent)
+    def leave_notify_event(self, gui_event=None):
+        event = Event("figure_leave_event", self, gui_event)
         self.callbacks.process("figure_leave_event", event)
+
+    def resize_event(self):
+        event = ResizeEvent('resize_event', self)
+        self.callbacks.process('resize_event', event)
+
+    def motion_notify_event(self, x, y, gui_event=None):
+        event = MouseEvent(
+            'motion_notify_event',
+            canvas=self,
+            x=x,
+            y=y,
+            guiEvent=gui_event)
+        self.callbacks.process('motion_notify_event', event)
+
+    def button_press_event(self, x, y, button,
+                           dblclick=False, gui_event=None):
+        event = MouseEvent(
+            'button_press_event',
+            canvas=self,
+            x=x,
+            y=y,
+            button=button,
+            dblclick=dblclick,
+            guiEvent=gui_event)
+        self.callbacks.process('button_press_event', event)
+
+    def button_release_event(self, x, y, button,
+                             dblclick=False, gui_event=None):
+        event = MouseEvent(
+            'button_release_event',
+            canvas=self,
+            x=x,
+            y=y,
+            button=button,
+            dblclick=dblclick,
+            guiEvent=gui_event)
+        self.callbacks.process('button_release_event', event)
+
+    def scroll_event(self, x, y, step, gui_event=None):
+        event = MouseEvent(
+            'scroll_event',
+            canvas=self,
+            x=x,
+            y=y,
+            step=step,
+            guiEvent=gui_event)
+        self.callbacks.process('scroll_event', event)
+
+    def key_press_event(self, key, gui_event=None):
+        event = KeyEvent(
+            'key_press_event',
+            canvas=self,
+            key=key,
+            guiEvent=gui_event)
+        self.callbacks.process('key_press_event', event)
+
+    def key_release_event(self, key, gui_event=None):
+        event = KeyEvent(
+            'key_release_event',
+            canvas=self,
+            key=key,
+            guiEvent=gui_event)
+        self.callbacks.process('key_release_event', event)
 
     def _on_pos_changed(self, *args):
         self.draw()
@@ -1389,8 +1396,7 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         winch = float(w) / dpival
         hinch = float(h) / dpival
         self.figure.set_size_inches(winch, hinch, forward=False)
-        event = ResizeEvent('resize_event', self)
-        self.callbacks.process('resize_event', event)
+        self.resize_event()
         self.draw()
 
     def callback(self, *largs):

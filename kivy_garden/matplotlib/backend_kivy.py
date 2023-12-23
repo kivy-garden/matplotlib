@@ -243,7 +243,7 @@ from matplotlib.backend_bases import (
 )
 from matplotlib.figure import Figure
 from matplotlib.transforms import Affine2D
-from matplotlib.backend_bases import ShowBase, Event, ResizeEvent, MouseEvent
+from matplotlib.backend_bases import ShowBase, Event, ResizeEvent, MouseEvent, KeyEvent
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.mathtext import MathTextParser
 from matplotlib import rcParams
@@ -1303,14 +1303,22 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         """Kivy event to trigger matplotlib `key_press_event`."""
-        self.key_press_event(keycode[1], guiEvent=None)
+        event = KeyEvent('key_press_event',
+                         self,
+                         keycode[1],
+                         guiEvent=None)
+        self.callbacks.process('key_press_event', event)
         return super(FigureCanvasKivy, self).keyboard_on_key_down(
             window, keycode, text, modifiers
         )
 
     def keyboard_on_key_up(self, window, keycode):
         """Kivy event to trigger matplotlib `key_release_event`."""
-        self.key_release_event(keycode[1], guiEvent=None)
+        event = KeyEvent('key_release_event',
+                         self,
+                         keycode[1],
+                         guiEvent=None)
+        self.callbacks.process('key_release_event', event)
         return super(FigureCanvasKivy, self).keyboard_on_key_up(window, keycode)
 
     def _on_mouse_pos(self, *args):

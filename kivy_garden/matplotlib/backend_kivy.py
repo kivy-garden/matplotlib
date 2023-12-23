@@ -1295,7 +1295,7 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
                                    x, y,
                                    self.get_mouse_button(touch),
                                    dblclick=False, guiEvent=None)
-                self.callbacks.process('button_press_event', event)
+                self.callbacks.process('button_release_event', event)
             touch.ungrab(self)
         else:
             return super(FigureCanvasKivy, self).on_touch_up(touch)

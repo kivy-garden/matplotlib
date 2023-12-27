@@ -1226,7 +1226,7 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
                 self.enter_notify_event()
         else:
             if not self.entered_figure:
-                self.leave_notify_event(guiEvent=None)
+                self.leave_notify_event()
         return False
 
     def on_touch_move(self, touch):
@@ -1240,7 +1240,7 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         if inside:
             self.motion_notify_event(x, y)
         if not inside and not self.entered_figure:
-            self.leave_notify_event(guiEvent=None)
+            self.leave_notify_event()
             self.entered_figure = True
         elif inside and self.entered_figure:
             self.enter_notify_event()
@@ -1304,7 +1304,7 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         if inside:
             self.motion_notify_event(x, y)
         if not inside and not self.entered_figure:
-            self.leave_notify_event(guiEvent=None)
+            self.leave_notify_event()
             self.entered_figure = True
         elif inside and self.entered_figure:
             self.enter_notify_event()

@@ -42,7 +42,7 @@ setup(
     keywords='Kivy kivy-garden',
 
     packages=find_namespace_packages(include=['kivy_garden.*']),
-    install_requires=['matplotlib==3.7.2', 'kivy>=2.1.0'],
+    install_requires=['matplotlib>=3.7.2', 'kivy>=2.1.0'],
     extras_require={
         'dev': ['pytest>=3.6', 'pytest-cov', 'pytest-asyncio',
                 'sphinx_rtd_theme'],

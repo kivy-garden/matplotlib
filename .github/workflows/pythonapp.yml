@@ -5,9 +5,9 @@ jobs:
   lint_test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Set up Python 3.x
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v5
       with:
         python-version: 3.x
     - name: Install dependencies
@@ -23,28 +23,27 @@ jobs:
     env:
       DISPLAY: :99.0
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Set up Python 3.x
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v5
       with:
         python-version: 3.x
-    - name: Make sdist
-      run: python3 setup.py sdist --formats=gztar
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt -y install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev
-        sudo apt-get -y install python3-setuptools build-essential libgl1-mesa-dev libgles2-mesa-dev
+        sudo apt-get -y install build-essential libgl1-mesa-dev libgles2-mesa-dev
         /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1280x720x24 -ac +extension GLX
 
         python3 -m pip install --upgrade pip virtualenv wheel setuptools
         python3 -m pip install kivy[base] --pre --extra-index-url https://kivy.org/downloads/simple/
+    - name: Make sdist
+      run: python3 setup.py sdist --formats=gztar
     - name: Install flower
       run: python3 -m pip install -e .[dev,ci] --extra-index-url https://kivy-garden.github.io/simple/
     - name: Make wheel
       run: python3 setup.py bdist_wheel --universal
     - name: Upload wheels as artifact
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v4
       with:
         name: wheels
         path: dist
@@ -66,9 +65,9 @@ jobs:
     env:
       KIVY_GL_BACKEND: angle_sdl2
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Set up Python 3.x
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v5
       with:
         python-version: 3.x
     - name: Install dependencies
@@ -85,9 +84,9 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Set up Python 3.x
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v5
       with:
         python-version: 3.x
     - name: Install dependencies
@@ -103,7 +102,7 @@ jobs:
         cd doc
         make html
     - name: Upload docs as artifact
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v4
       with:
         name: docs
         path: doc/build/html

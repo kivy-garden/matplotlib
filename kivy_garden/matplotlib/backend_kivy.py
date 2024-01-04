@@ -1217,9 +1217,9 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         if self.collide_point(*touch.pos):
             self.motion_notify_event(x, y)
             touch.grab(self)
-            if 'button' in touch.profile and touch.button in ("scrollup",
-                                                              "scrolldown"):
-                self.scroll_event(x, y, 5)
+            if 'button' in touch.profile and "scrollup" in touch.button:
+                # up and down appears to be the opposite in kivy and matplotlib
+                self.scroll_event(x, y, step=5, button="down")
             else:
                 self.button_press_event(x, y, self.get_mouse_button(touch))
             if self.entered_figure:
@@ -1269,9 +1269,9 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         x = newcoord[0]
         y = newcoord[1]
         if touch.grab_current is self:
-            if 'button' in touch.profile and touch.button in ("scrollup",
-                                                              "scrolldown"):
-                self.scroll_event(x, y, 5)
+            if 'button' in touch.profile and "scrolldown" in touch.button:
+                # up and down appears to be the opposite in kivy and matplotlib
+                self.scroll_event(x, y, step=5, button="up")
             else:
                 self.button_release_event(x, y, self.get_mouse_button(touch))
             touch.ungrab(self)
@@ -1355,13 +1355,14 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
             guiEvent=gui_event)
         self.callbacks.process('button_release_event', event)
 
-    def scroll_event(self, x, y, step, gui_event=None):
+    def scroll_event(self, x, y, step, button, gui_event=None):
         event = MouseEvent(
             'scroll_event',
             canvas=self,
             x=x,
             y=y,
             step=step,
+            button=button,
             guiEvent=gui_event)
         self.callbacks.process('scroll_event', event)
 

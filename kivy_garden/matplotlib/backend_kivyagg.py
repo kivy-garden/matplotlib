@@ -153,7 +153,7 @@ class Show(ShowBase):
     """
 
     @classmethod
-    def mainloop(self):
+    def mainloop(cls):
         global my_canvas
         global toolbar
         app = App.get_running_app()

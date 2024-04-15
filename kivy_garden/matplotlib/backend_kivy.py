@@ -356,7 +356,7 @@ class Show(ShowBase):
     """
 
     @classmethod
-    def mainloop(self):
+    def mainloop(cls):
         app = App.get_running_app()
         if app is None:
             app = MPLKivyApp(figure=my_canvas, toolbar=toolbar)

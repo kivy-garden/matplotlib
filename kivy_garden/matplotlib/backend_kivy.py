@@ -272,8 +272,8 @@ from kivy.app import App
 from kivy.graphics import (
     Line,
     Rectangle,
-    Color, 
-    Rotate, 
+    Color,
+    Rotate,
     Translate,
     Mesh,
     StencilPush,
@@ -1228,9 +1228,8 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         if self.collide_point(*touch.pos):
             self.motion_notify_event(x, y)
             touch.grab(self)
-            if ("button" in touch.profile and 
-                touch.button in ("scrollup", "scrolldown")
-            ):
+            if ("button" in touch.profile and
+                touch.button in ("scrollup", "scrolldown")):
                 self.scroll_event(x, y, 5)
             else:
                 self.button_press_event(x, y, self.get_mouse_button(touch))
@@ -1281,9 +1280,8 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         x = newcoord[0]
         y = newcoord[1]
         if touch.grab_current is self:
-            if ("button" in touch.profile and 
-                touch.button in ("scrollup", "scrolldown")
-            ):
+            if ("button" in touch.profile and
+                touch.button in ("scrollup", "scrolldown")):
                 self.scroll_event(x, y, 5)
             else:
                 self.button_release_event(x, y, self.get_mouse_button(touch))

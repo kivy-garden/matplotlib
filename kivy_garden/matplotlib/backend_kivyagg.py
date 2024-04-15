@@ -71,7 +71,9 @@ from __future__ import (
     unicode_literals,
 )
 
-__all__ = "FigureCanvasKivyAgg"
+__all__ = (
+    "FigureCanvasKivyAgg",
+)
 
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
@@ -130,7 +132,6 @@ class MPLKivyApp(App):
     """Creates the App initializing a FloatLayout with a figure and toolbar
     widget.
     """
-
     figure = ObjectProperty(None)
     toolbar = ObjectProperty(None)
 

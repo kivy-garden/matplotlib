@@ -61,7 +61,7 @@ the first example in the following section.
         my_mpl_kivy_widget = FigureCanvas(fig)
         fig.canvas.mpl_connect('button_press_event', callback_handler)
 
-2. Use pyplot to write the application following matplotlib sintax as can be
+2. Use pyplot to write the application following matplotlib syntax as can be
 seen in the second example below. In this case a Kivy application will be
 created automatically from the matplotlib instructions and a NavigationToolbar
 will be added to the main canvas.
@@ -243,11 +243,13 @@ from matplotlib.backend_bases import (
 )
 from matplotlib.figure import Figure
 from matplotlib.transforms import Affine2D
-from matplotlib.backend_bases import (ShowBase,
-                                      Event,
-                                      ResizeEvent,
-                                      MouseEvent,
-                                      KeyEvent)
+from matplotlib.backend_bases import (
+    ShowBase,
+    Event,
+    ResizeEvent,
+    MouseEvent,
+    KeyEvent,
+)
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.mathtext import MathTextParser
 from matplotlib import rcParams
@@ -317,7 +319,6 @@ class MPLKivyApp(App):
     """Creates the App initializing a FloatLayout with a figure and toolbar
     widget.
     """
-
     figure = ObjectProperty(None)
     toolbar = ObjectProperty(None)
 
@@ -989,8 +990,9 @@ class NavigationToolbar2Kivy(NavigationToolbar2):
         """
         basedir = os.path.join(rcParams["datapath"], "images")
         actionview = ActionView()
-        actionprevious = ActionPrevious(title="Navigation",
-                                        with_previous=False)
+        actionprevious = ActionPrevious(
+            title="Navigation", with_previous=False,
+        )
         actionoverflow = ActionOverflow()
         actionview.add_widget(actionprevious)
         actionview.add_widget(actionoverflow)
@@ -1212,13 +1214,15 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         newcoord = self.to_widget(touch.x, touch.y, relative=True)
         x = newcoord[0]
         y = newcoord[1]
+
         if super(FigureCanvasKivy, self).on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos):
             self.motion_notify_event(x, y)
             touch.grab(self)
-            if 'button' in touch.profile and touch.button in ("scrollup",
-                                                              "scrolldown"):
+            if ("button" in touch.profile and 
+                touch.button in ("scrollup", "scrolldown")
+            ):
                 self.scroll_event(x, y, 5)
             else:
                 self.button_press_event(x, y, self.get_mouse_button(touch))
@@ -1269,8 +1273,9 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         x = newcoord[0]
         y = newcoord[1]
         if touch.grab_current is self:
-            if 'button' in touch.profile and touch.button in ("scrollup",
-                                                              "scrolldown"):
+            if ("button" in touch.profile and 
+                touch.button in ("scrollup", "scrolldown")
+            ):
                 self.scroll_event(x, y, 5)
             else:
                 self.button_release_event(x, y, self.get_mouse_button(touch))

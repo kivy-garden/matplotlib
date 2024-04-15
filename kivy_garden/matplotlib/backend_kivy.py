@@ -228,9 +228,13 @@ from __future__ import (
     print_function,
     unicode_literals,
 )
-
-import six
+from packaging.version import Version
 import os
+import textwrap
+import uuid
+import six
+import numbers
+import numpy as np
 import matplotlib
 from matplotlib._pylab_helpers import Gcf
 from matplotlib.backend_bases import (
@@ -260,9 +264,27 @@ try:
 except ImportError:
     raise ImportError("this backend requires Kivy to be installed.")
 
+from kivy.logger import Logger
+
+from kivy.base import EventLoop
+from kivy.properties import ObjectProperty
 from kivy.app import App
+from kivy.graphics import (
+    Line,
+    Rectangle,
+    Color, 
+    Rotate, 
+    Translate,
+    Mesh,
+    StencilPush,
+    StencilPop,
+    StencilUse,
+    StencilUnUse,
+)
 from kivy.graphics.texture import Texture
-from kivy.graphics import Rectangle
+from kivy.graphics.tesselator import Tesselator
+from kivy.graphics.context_instructions import PopMatrix, PushMatrix
+
 from kivy.uix.widget import Widget
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.behaviors import FocusBehavior
@@ -275,35 +297,21 @@ from kivy.uix.actionbar import (
     ActionOverflow,
     ActionSeparator,
 )
-from kivy.base import EventLoop
 from kivy.core.text import Label as CoreLabel
 from kivy.core.image import Image
-from kivy.graphics import Color, Line
-from kivy.graphics import Rotate, Translate
 from kivy.graphics.instructions import InstructionGroup
-from kivy.graphics.tesselator import Tesselator
-from kivy.graphics.context_instructions import PopMatrix, PushMatrix
-from kivy.graphics import StencilPush, StencilPop, StencilUse, StencilUnUse
-from kivy.logger import Logger
-from kivy.graphics import Mesh
 from kivy.resources import resource_find
 from kivy.uix.stencilview import StencilView
 from kivy.core.window import Window
 from kivy.uix.popup import Popup
-from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from kivy.clock import Clock
-from distutils.version import LooseVersion
-
-_mpl_ge_1_5 = LooseVersion(matplotlib.__version__) >= LooseVersion("1.5.0")
-_mpl_ge_2_0 = LooseVersion(matplotlib.__version__) >= LooseVersion("2.0.0")
-
-import numpy as np
-import textwrap
-import uuid
-import numbers
 
 kivy.require("1.9.1")
+
+_mpl_ge_1_5 = Version(matplotlib.__version__) >= Version("1.5.0")
+_mpl_ge_2_0 = Version(matplotlib.__version__) >= Version("2.0.0")
+
 
 toolbar = None
 my_canvas = None

@@ -5,8 +5,8 @@ class TestEvents(GraphicUnitTest):
 
     @classmethod
     def setUpClass(cls):
-        from matplotlib.figure import Figure
         from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+        from matplotlib.figure import Figure
 
         fig = Figure()
         ax = fig.add_subplot(111)

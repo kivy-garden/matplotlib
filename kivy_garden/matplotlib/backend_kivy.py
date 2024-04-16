@@ -228,84 +228,82 @@ from __future__ import (
     print_function,
     unicode_literals,
 )
-from packaging.version import Version
+
+import numbers
 import os
 import textwrap
 import uuid
-import six
-import numbers
+
 import numpy as np
+from packaging.version import Version
+import six
+
 import matplotlib
+from matplotlib import _path, rcParams
 from matplotlib._pylab_helpers import Gcf
 from matplotlib.backend_bases import (
-    RendererBase,
-    GraphicsContextBase,
-    FigureManagerBase,
+    Event,
     FigureCanvasBase,
+    FigureManagerBase,
+    GraphicsContextBase,
+    KeyEvent,
+    MouseEvent,
     NavigationToolbar2,
+    RendererBase,
+    ResizeEvent,
+    ShowBase,
     TimerBase,
 )
-from matplotlib.figure import Figure
-from matplotlib.transforms import Affine2D
-from matplotlib.backend_bases import (
-    ShowBase,
-    Event,
-    ResizeEvent,
-    MouseEvent,
-    KeyEvent,
-)
 from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib.figure import Figure
 from matplotlib.mathtext import MathTextParser
-from matplotlib import rcParams
-from matplotlib import _path
+from matplotlib.transforms import Affine2D
 
 try:
     import kivy
 except ImportError:
     raise ImportError("this backend requires Kivy to be installed.")
 
-from kivy.logger import Logger
-
-from kivy.base import EventLoop
-from kivy.properties import ObjectProperty
 from kivy.app import App
+from kivy.base import EventLoop
+from kivy.clock import Clock
+from kivy.core.image import Image
+from kivy.core.text import Label as CoreLabel
+from kivy.core.window import Window
 from kivy.graphics import (
-    Line,
-    Rectangle,
     Color,
-    Rotate,
-    Translate,
+    Line,
     Mesh,
-    StencilPush,
+    Rectangle,
+    Rotate,
     StencilPop,
-    StencilUse,
+    StencilPush,
     StencilUnUse,
+    StencilUse,
+    Translate,
 )
-from kivy.graphics.texture import Texture
-from kivy.graphics.tesselator import Tesselator
 from kivy.graphics.context_instructions import PopMatrix, PushMatrix
-
-from kivy.uix.widget import Widget
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.behaviors import FocusBehavior
+from kivy.graphics.instructions import InstructionGroup
+from kivy.graphics.tesselator import Tesselator
+from kivy.graphics.texture import Texture
+from kivy.lang import Builder
+from kivy.logger import Logger
+from kivy.properties import ObjectProperty
+from kivy.resources import resource_find
 from kivy.uix.actionbar import (
     ActionBar,
-    ActionView,
     ActionButton,
-    ActionToggleButton,
-    ActionPrevious,
     ActionOverflow,
+    ActionPrevious,
     ActionSeparator,
+    ActionToggleButton,
+    ActionView,
 )
-from kivy.core.text import Label as CoreLabel
-from kivy.core.image import Image
-from kivy.graphics.instructions import InstructionGroup
-from kivy.resources import resource_find
-from kivy.uix.stencilview import StencilView
-from kivy.core.window import Window
+from kivy.uix.behaviors import FocusBehavior
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
-from kivy.lang import Builder
-from kivy.clock import Clock
+from kivy.uix.stencilview import StencilView
+from kivy.uix.widget import Widget
 
 kivy.require("1.9.1")
 

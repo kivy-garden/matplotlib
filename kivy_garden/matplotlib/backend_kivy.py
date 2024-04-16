@@ -325,6 +325,7 @@ class MPLKivyApp(App):
     """Creates the App initializing a FloatLayout with a figure and toolbar
     widget.
     """
+
     figure = ObjectProperty(None)
     toolbar = ObjectProperty(None)
 
@@ -997,7 +998,8 @@ class NavigationToolbar2Kivy(NavigationToolbar2):
         basedir = os.path.join(rcParams["datapath"], "images")
         actionview = ActionView()
         actionprevious = ActionPrevious(
-            title="Navigation", with_previous=False,
+            title="Navigation",
+            with_previous=False,
         )
         actionoverflow = ActionOverflow()
         actionview.add_widget(actionprevious)
@@ -1226,8 +1228,10 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         if self.collide_point(*touch.pos):
             self.motion_notify_event(x, y)
             touch.grab(self)
-            if ("button" in touch.profile and touch.button in ("scrollup",
-                                                               "scrolldown")):
+            if "button" in touch.profile and touch.button in (
+                "scrollup",
+                "scrolldown",
+            ):
                 self.scroll_event(x, y, 5)
             else:
                 self.button_press_event(x, y, self.get_mouse_button(touch))
@@ -1278,8 +1282,10 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         x = newcoord[0]
         y = newcoord[1]
         if touch.grab_current is self:
-            if ("button" in touch.profile and touch.button in ("scrollup",
-                                                               "scrolldown")):
+            if "button" in touch.profile and touch.button in (
+                "scrollup",
+                "scrolldown",
+            ):
                 self.scroll_event(x, y, 5)
             else:
                 self.button_release_event(x, y, self.get_mouse_button(touch))
@@ -1292,13 +1298,13 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         """Kivy event to trigger matplotlib `key_press_event`."""
         self.key_press_event(key=keycode[1])
         return super(FigureCanvasKivy, self).keyboard_on_key_down(
-            window, keycode, text, modifiers)
+            window, keycode, text, modifiers
+        )
 
     def keyboard_on_key_up(self, window, keycode):
         """Kivy event to trigger matplotlib `key_release_event`."""
         self.key_release_event(key=keycode[1])
-        return super(FigureCanvasKivy, self).keyboard_on_key_up(
-            window, keycode)
+        return super(FigureCanvasKivy, self).keyboard_on_key_up(window, keycode)
 
     def _on_mouse_pos(self, *args):
         """Kivy Event to trigger the following matplotlib events:
@@ -1328,67 +1334,58 @@ class FigureCanvasKivy(FocusBehavior, Widget, FigureCanvasBase):
         self.callbacks.process("figure_leave_event", event)
 
     def resize_event(self):
-        event = ResizeEvent('resize_event', self)
-        self.callbacks.process('resize_event', event)
+        event = ResizeEvent("resize_event", self)
+        self.callbacks.process("resize_event", event)
 
     def motion_notify_event(self, x, y, gui_event=None):
         event = MouseEvent(
-            'motion_notify_event',
-            canvas=self,
-            x=x,
-            y=y,
-            guiEvent=gui_event)
-        self.callbacks.process('motion_notify_event', event)
+            "motion_notify_event", canvas=self, x=x, y=y, guiEvent=gui_event
+        )
+        self.callbacks.process("motion_notify_event", event)
 
-    def button_press_event(self, x, y, button,
-                           dblclick=False, gui_event=None):
+    def button_press_event(self, x, y, button, dblclick=False, gui_event=None):
         event = MouseEvent(
-            'button_press_event',
+            "button_press_event",
             canvas=self,
             x=x,
             y=y,
             button=button,
             dblclick=dblclick,
-            guiEvent=gui_event)
-        self.callbacks.process('button_press_event', event)
+            guiEvent=gui_event,
+        )
+        self.callbacks.process("button_press_event", event)
 
-    def button_release_event(self, x, y, button,
-                             dblclick=False, gui_event=None):
+    def button_release_event(
+        self, x, y, button, dblclick=False, gui_event=None
+    ):
         event = MouseEvent(
-            'button_release_event',
+            "button_release_event",
             canvas=self,
             x=x,
             y=y,
             button=button,
             dblclick=dblclick,
-            guiEvent=gui_event)
-        self.callbacks.process('button_release_event', event)
+            guiEvent=gui_event,
+        )
+        self.callbacks.process("button_release_event", event)
 
     def scroll_event(self, x, y, step, gui_event=None):
         event = MouseEvent(
-            'scroll_event',
-            canvas=self,
-            x=x,
-            y=y,
-            step=step,
-            guiEvent=gui_event)
-        self.callbacks.process('scroll_event', event)
+            "scroll_event", canvas=self, x=x, y=y, step=step, guiEvent=gui_event
+        )
+        self.callbacks.process("scroll_event", event)
 
     def key_press_event(self, key, gui_event=None):
         event = KeyEvent(
-            'key_press_event',
-            canvas=self,
-            key=key,
-            guiEvent=gui_event)
-        self.callbacks.process('key_press_event', event)
+            "key_press_event", canvas=self, key=key, guiEvent=gui_event
+        )
+        self.callbacks.process("key_press_event", event)
 
     def key_release_event(self, key, gui_event=None):
         event = KeyEvent(
-            'key_release_event',
-            canvas=self,
-            key=key,
-            guiEvent=gui_event)
-        self.callbacks.process('key_release_event', event)
+            "key_release_event", canvas=self, key=key, guiEvent=gui_event
+        )
+        self.callbacks.process("key_release_event", event)
 
     def _on_pos_changed(self, *args):
         self.draw()

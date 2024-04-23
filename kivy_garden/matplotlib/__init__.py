@@ -6,16 +6,15 @@ Matplotlib flower
 """
 
 from ._version import __version__
-
-from kivy_garden.matplotlib.backend_kivy import (
+from .backend_kivy import (
     FigureCanvasKivy,
     FigureManagerKivy,
-    RendererKivy,
     GraphicsContextKivy,
-    NavigationToolbar2Kivy,
     MPLKivyApp,
+    NavigationToolbar2Kivy,
+    RendererKivy,
 )
-from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+from .backend_kivyagg import FigureCanvasKivyAgg
 
 __all__ = (
     FigureCanvasKivy.__name__,

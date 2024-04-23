@@ -71,11 +71,11 @@ from __future__ import (
     unicode_literals,
 )
 
-__all__ = "FigureCanvasKivyAgg"
+__all__ = ("FigureCanvasKivyAgg",)
 
-from matplotlib.figure import Figure
+from matplotlib.backend_bases import ShowBase, register_backend
 from matplotlib.backends.backend_agg import FigureCanvasAgg
-from matplotlib.backend_bases import register_backend, ShowBase
+from matplotlib.figure import Figure
 
 try:
     import kivy
@@ -83,12 +83,13 @@ except ImportError:
     raise ImportError("this backend requires Kivy to be installed.")
 
 from kivy.app import App
-from kivy.graphics.texture import Texture
-from kivy.graphics import Rectangle, Color
-from kivy.properties import ObjectProperty
 from kivy.base import EventLoop
-from kivy.uix.floatlayout import FloatLayout
 from kivy.core.image import Image
+from kivy.graphics import Color, Rectangle
+from kivy.graphics.texture import Texture
+from kivy.properties import ObjectProperty
+from kivy.uix.floatlayout import FloatLayout
+
 from kivy_garden.matplotlib.backend_kivy import (
     FigureCanvasKivy,
     FigureManagerKivy,
@@ -152,7 +153,7 @@ class Show(ShowBase):
     """
 
     @classmethod
-    def mainloop(self):
+    def mainloop(cls):
         global my_canvas
         global toolbar
         app = App.get_running_app()

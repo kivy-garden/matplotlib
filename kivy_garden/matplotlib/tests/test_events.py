@@ -5,8 +5,8 @@ class TestEvents(GraphicUnitTest):
 
     @classmethod
     def setUpClass(cls):
-        from matplotlib.figure import Figure
         from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+        from matplotlib.figure import Figure
 
         fig = Figure()
         ax = fig.add_subplot(111)
@@ -23,15 +23,15 @@ class TestEvents(GraphicUnitTest):
     def test_touch_down_scrolldown(self):
         self.render(self.figure_canvas)
         touch = UnitTestTouch(x=0, y=0)
-        touch.profile = 'button'
-        touch.button = 'scrolldown'
+        touch.profile = "button"
+        touch.button = "scrolldown"
         touch.touch_down()
 
     def test_touch_down_scrolluo(self):
         self.render(self.figure_canvas)
         touch = UnitTestTouch(x=0, y=0)
-        touch.profile = 'button'
-        touch.button = 'scrollup'
+        touch.profile = "button"
+        touch.button = "scrollup"
         touch.touch_down()
 
     def test_touch_up(self):
@@ -43,16 +43,16 @@ class TestEvents(GraphicUnitTest):
     def test_touch_up_scrolldown(self):
         self.render(self.figure_canvas)
         touch = UnitTestTouch(x=0, y=0)
-        touch.profile = 'button'
-        touch.button = 'scrolldown'
+        touch.profile = "button"
+        touch.button = "scrolldown"
         touch.touch_down()
         touch.touch_up()
 
     def test_touch_up_scrolluo(self):
         self.render(self.figure_canvas)
         touch = UnitTestTouch(x=0, y=0)
-        touch.profile = 'button'
-        touch.button = 'scrollup'
+        touch.profile = "button"
+        touch.button = "scrollup"
         touch.touch_down()
         touch.touch_up()
 
@@ -66,12 +66,13 @@ class TestEvents(GraphicUnitTest):
 
         EventLoop.ensure_window()
         window = EventLoop.window
-        key = 'tab'
+        key = "tab"
         key_code = (key, Keyboard.keycodes[key])
         print(Keyboard.keycodes)
 
         self.figure_canvas.keyboard_on_key_down(
-            window, key_code, text='tab', modifiers=[])
+            window, key_code, text="tab", modifiers=[]
+        )
 
     def test_on_key_up(self):
         from kivy.base import EventLoop
@@ -79,8 +80,7 @@ class TestEvents(GraphicUnitTest):
 
         EventLoop.ensure_window()
         window = EventLoop.window
-        key = 'tab'
+        key = "tab"
         key_code = (key, Keyboard.keycodes[key])
         print(Keyboard.keycodes)
-        self.figure_canvas.keyboard_on_key_up(
-            window, key_code)
+        self.figure_canvas.keyboard_on_key_up(window, key_code)
